@@ -22,7 +22,7 @@ parser.add_argument('--single_fulldomain', type=str, default='Full',
 parser.add_argument('--input', type=str, default='3D', 
                     help='define your input size, can be "2D" or "3D"')
 
-#%% This size define is very important, for now please use nteger multiples of the training patch size
+#%% This size definition is very important, for now, please use integer multiples of the training patch size
 parser.add_argument('--size', type=int, default=768, help='Load checkpoint')
 #===============================================================================================
 parser.add_argument('--checkpoint', type=int, default=6, help='Load checkpoint')
