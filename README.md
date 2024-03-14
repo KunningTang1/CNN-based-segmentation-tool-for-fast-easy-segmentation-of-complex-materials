@@ -1,3 +1,5 @@
+Segment-Everything is a CNN-based segmentation workflow for multi-phase semantic segmentation using a few 2D slices. The segmentation network includes U-ResNet and Efficient-Unet.
+
 User manual for Segment-Everything:
 1. The CNN-based segmentation is trained based on multiple 2D paired grayscale images and labeled images. Therefore, the user has to prepare these training pairs. We suggest using trainable Weka segmentation to
    generate the 2D paires.
