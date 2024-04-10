@@ -10,18 +10,18 @@ def mkdir(path):
 	folder = os.path.exists(path)
 	if not folder:                   
 		os.makedirs(path)  
-file1 = "H:\\Segment_everthing\\Example\\train\\raw"
+file1 = "./Example/train/raw"
 mkdir(file1)  
-file2 = "H:\\Segment_everthing\\Example\\train\\seg"
+file2 = "./Example/train/seg"
 mkdir(file2)  
-file3 = "H:\\Segment_everthing\\Example\\ck"
+file3 = "./Example/ck"
 mkdir(file3)  
-file4 = "H:\\Segment_everthing\\Example\\inference"
+file4 = "./Example/inference"
 mkdir(file4)  
 #%% Here we just have one training paires
 
-path_raw = 'H:\\Segment_everthing\\Example\\training_paires\\raw'
-path_seg = 'H:\\Segment_everthing\\Example\\training_paires\\seg'
+path_raw = './training_paires/raw'
+path_seg = './training_paires/seg'
 num_train_paires_raw = listdir(path_raw)
 num_train_paires_seg = listdir(path_seg)
 
@@ -53,8 +53,8 @@ for i in range(len(num_train_paires_raw)):
         gray = im[(y):(y + h), (x):(x + w)]
         lb = label[(y):(y + h), (x):(x + w)]
     
-        cv2.imwrite(file1 +'\\'+ str(id) + '.png', gray)
-        cv2.imwrite(file2 +'\\'+ str(id) + '.png', lb)
+        cv2.imwrite(os.path.join(file1, str(id) + '.png'), gray)
+        cv2.imwrite(os.path.join(file2, str(id) + '.png'), lb)
         count+=1
         id +=1
         if count == 800:

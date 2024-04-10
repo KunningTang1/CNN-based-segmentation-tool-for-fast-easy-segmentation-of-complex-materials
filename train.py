@@ -15,7 +15,8 @@ from utlis import label_accuracy_score,weights_init_normal
 import os
 #%% 
 # User has to defined this, this value can be read from the trainingdatePrepare.py 
-colormap = [[0,0,0],[1,1,1],[4,4,4]]
+# colormap = [[0,0,0],[1,1,1],[4,4,4]]
+colormap =  [[0,0,0],[1,1,1],[2,2,2]]
 num_classes = len(colormap)
 
 cm2lbl = np.zeros(256**3) # Every pixel is in range of 0 ~ 255，RGB with 3 channels
@@ -47,9 +48,9 @@ parser.add_argument('--size', type=int, default=96,
                     help='size of the data crop (squared assumed)')
 parser.add_argument('--gpu', type=int, default=0, 
                     help='define which gpu yo use, can be "0" or "1" if you have two gpus')
-parser.add_argument('--dir_train_data', type=str, default='H:\\Segment_everthing\\Example\\train',
+parser.add_argument('--dir_train_data', type=str, default='./Example/train',
                     help='dataset directory')
-parser.add_argument('--dir_checkpoint', type=str, default='H:\\Segment_everthing\\Example\\ck',
+parser.add_argument('--dir_checkpoint', type=str, default='./Example/ck',
                     help='dataset directory')
 opt = parser.parse_args()
 print(opt)
@@ -78,8 +79,8 @@ def label_transforms(data, label, height=opt.size, width=opt.size):
 class TrainDatasetFromFolder(Dataset):
     def __init__(self, root):
         super(TrainDatasetFromFolder, self).__init__()
-        self.image_filenames1 = [join(root, x) for x in listdir(root)][0]
-        self.image_filenames2 = [join(root, x) for x in listdir(root)][1]
+        self.image_filenames1 = [join(root, x) for x in listdir(root)][1]
+        self.image_filenames2 = [join(root, x) for x in listdir(root)][0]
         LIST1 = listdir(self.image_filenames1)
         LIST2 = listdir(self.image_filenames2)
         LIST1.sort(key=lambda x: int(x[:-4]))
@@ -211,5 +212,3 @@ plt.legend()
 plt.grid()
 plt.xlabel('Epoch');plt.ylabel('Accuracy')
 print("==============Training finished==============")
-    
-

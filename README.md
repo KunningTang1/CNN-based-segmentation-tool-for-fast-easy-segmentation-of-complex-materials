@@ -11,3 +11,5 @@ User manual for Segment-Everything:
 
 
 An example of a 3-phase sandstone image segmentation is provided. One training pair is stored in "training-pairs" as well as a testing 2D slice is stored in "test/2D". 
+
+`python train.py --`

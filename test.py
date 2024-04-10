@@ -11,6 +11,7 @@ import argparse
 import nibabel as nib
 from skimage import io
 from os import listdir
+import tifffile as tiff
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default='UresNet', 
@@ -27,22 +28,22 @@ parser.add_argument('--size', type=int, default=768, help='Load checkpoint')
 #===============================================================================================
 parser.add_argument('--checkpoint', type=int, default=6, help='Load checkpoint')
 parser.add_argument('--gpu', type=int, default=0, help='define which gpu yo use')
-parser.add_argument('--dir_3D_data', type=str, default='H:\\Segment_everthing\\Example\\test\\3D',
+parser.add_argument('--dir_3D_data', type=str, default='./test/3D',
                     help='3D image directory')
-parser.add_argument('--dir_2D_data', type=str, default='H:\\Segment_everthing\\Example\\test\\2D',
+parser.add_argument('--dir_2D_data', type=str, default='./test/2D',
                     help='2D testing image directory')
-parser.add_argument('--dir_checkpoint', type=str, default='H:\\Segment_everthing\\Example\\ck',
+parser.add_argument('--dir_checkpoint', type=str, default='./Example/ck',
                     help='Trained model directory')
-parser.add_argument('--dir_result', type=str, default='H:\\Segment_everthing\\Example\\inference',
+parser.add_argument('--dir_result', type=str, default='./Example/inference',
                     help='Segmented result directory')
 
 opt = parser.parse_args()
 print(opt)
 
 def mkdir(path):
-	folder = os.path.exists(path)
-	if not folder:                   
-		os.makedirs(path)   
+    folder = os.path.exists(path)
+    if not folder:
+        os.makedirs(path)
         
 if opt.model == 'UresNet':
     net = Uresnet(3,3)   
@@ -71,29 +72,32 @@ def crop(data,height=opt.size, width=opt.size):
 
 if opt.input == "3D":
     name = listdir(opt.dir_3D_data)
-    im = nib.load(os.path.join(opt.dir_3D_data, name[0]))
-    img = im.get_data()
-    
+    img = tiff.imread(os.path.join(opt.dir_3D_data, name[0]))
+
     file1 = os.path.join(opt.dir_result,'raw')
     mkdir(file1)    
     file2 = os.path.join(opt.dir_result,'seg')
     mkdir(file2)   
     
-    for i in tqdm(range(0,np.size(img,2))):
-        img1 = img[:,:,i]
-        img2 = Image.fromarray(img1)
-        img2 = crop(img2)
-        cut_image = img2.convert('RGB')
-        cut_image1 = im_tfs(cut_image)
+    for i in tqdm(range(img.shape[0])):
+        img_slice = img[i,:,:]
+        img_slice = Image.fromarray(img_slice)
+        img_slice = img_slice.convert('RGB')
+
+        # 将图像转换为tensor
+        img_tensor = im_tfs(img_slice).unsqueeze(0).float()
         
-        test_image1 = cut_image1.unsqueeze(0).float()
         with torch.no_grad(): 
-            out = net(test_image1.cuda())
+            out = net(img_tensor.cuda())
+        
         pred = out.max(1)[1].squeeze().data.cpu().numpy()
         pred = np.uint8(pred)
         pred = Image.fromarray(pred)
-        pred.save(file2 + '\\' + '%d' % i + '.png')
-        cut_image.save(file1 + '\\' +  '%d' % i + '.png')
+
+        # 将图像保存到raw文件夹中
+        img_slice.save(os.path.join(file1, f'{i}.png'))
+        # 将预测结果保存到seg文件夹中
+        pred.save(os.path.join(file2, f'{i}.png'))
         
 elif opt.input == "2D":
     name = listdir(opt.dir_2D_data)
@@ -113,9 +117,7 @@ elif opt.input == "2D":
     pred = out.max(1)[1].squeeze().data.cpu().numpy()
     pred = np.uint8(pred)
     pred = Image.fromarray(pred)
-    plt.subplot(122)
-    plt.imshow(pred)
-    
+    pred.save('1.png')
     
     
     
