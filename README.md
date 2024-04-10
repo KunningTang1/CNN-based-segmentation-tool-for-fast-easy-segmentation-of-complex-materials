@@ -14,6 +14,8 @@ An example of a 3-phase sandstone image segmentation is provided. One training p
 
 
 Please cite the following papers if use the code:
-https://doi.org/10.1103/PhysRevApplied.17.034048
-https://doi.org/10.1016/j.compchemeng.2022.107768
-https://doi.org/10.1016/j.mineng.2022.107592
+https://doi.org/10.1103/PhysRevApplied.17.034048;
+
+https://doi.org/10.1016/j.compchemeng.2022.107768;
+
+https://doi.org/10.1016/j.mineng.2022.107592;
