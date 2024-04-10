@@ -11,3 +11,9 @@ User manual for Segment-Everything:
 
 
 An example of a 3-phase sandstone image segmentation is provided. One training pair is stored in "training-pairs" as well as a testing 2D slice is stored in "test/2D". 
+
+
+Please cite the following papers if use the code:
+https://doi.org/10.1103/PhysRevApplied.17.034048
+https://doi.org/10.1016/j.compchemeng.2022.107768
+https://doi.org/10.1016/j.mineng.2022.107592
