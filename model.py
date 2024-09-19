@@ -786,35 +786,35 @@ class Uresnet(nn.Module):
         x2 = self.maxpool(x1)     
         x3 = self.downconv2(x2)
         x4 = self.downconv3(x3)      
-        x4 += x3
+        x4 = x3 + x4
         x5 = self.maxpool(x4)
         
         x6 = self.downconv4(x5)
         x7 = self.downconv5(x6)
-        x7 += x6
+        x7 = x6 + x7
         x8 = self.maxpool(x7)
         
         x9 = self.downconv6(x8)
         x10 = self.downconv7(x9)
-        x10 += x9
+        x10 = x9 + x10
        
         y3 = nn.functional.interpolate(x10, mode='bilinear', scale_factor=2,align_corners=True)
         y4 = self.updeconv2(y3)
         y5 = self.upconv3(torch.cat([y4, x7],1))
         y6 = self.upconv4(y5)
-        y6 += y5
+        y6 = y5 + y6
         
         y6 = nn.functional.interpolate(y6, mode='bilinear', scale_factor=2,align_corners=True)
         y7 = self.updeconv3(y6)   
         y8 = self.upconv5(torch.cat([y7, x4],1))
         y9 = self.upconv6(y8)
-        y9 += y8
+        y9 = y8 + y9
         
         y9 = nn.functional.interpolate(y9, mode='bilinear', scale_factor=2,align_corners=True)
         y10= self.updeconv4(y9)
         y11 = self.upconv7(torch.cat([y10, x1],1))
         y12 = self.upconv8(y11)
-        y12 += y11
+        y12 = y11 + y12
      
         out = self.last(y12)
         
